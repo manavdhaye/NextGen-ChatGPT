@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextGen AI Studio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Load FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">♾️</div>
+                    <div class="logo-text">Nextgen<span>AI</span></div>
+                </div>
+                <div class="logo-subtitle">Beyond Limits. Infinite Possibilities.</div>
+                
+                <button class="new-chat-btn" onclick="newChat()">
+                    <i class="fas fa-comment-dots"></i> New Chat
+                </button>
+
+                <!-- Search Chat Input -->
+                <div class="search-chat">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search Chat" onkeyup="filterThreads()">
+                </div>
+            </div>
+
+            <!-- Navigation Links (Visual) -->
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item"><i class="far fa-image"></i> Images</a>
+                <a href="#" class="nav-item"><i class="fas fa-code"></i> Code</a>
+                <a href="#" class="nav-item"><i class="fas fa-project-diagram"></i> Workflows</a>
+                <a href="#" class="nav-item"><i class="far fa-file-powerpoint"></i> PPT</a>
+            </nav>
+            
+            <div class="sidebar-section-title">Recent History</div>
+            <div class="threads-list" id="threadsList"></div>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">M</div>
+                    <div class="user-info">
+                        <div class="name">My Account</div>
+                        <div class="email">user@nextgen.ai</div>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <i class="fas fa-bars menu-toggle"></i>
+                    <span class="header-title">NextgenAI <i class="fas fa-check-circle verified-icon"></i></span>
+                </div>
+                <div class="header-right">
+                    <!-- 🚨 THEME TOGGLE FIX: Added id and onclick event here -->
+                    <i class="far fa-sun icon-btn" id="themeToggleBtn" onclick="toggleTheme()"></i>
+                    <i class="far fa-bell icon-btn"></i>
+                    <div class="avatar header-avatar">M</div>
+                </div>
+            </header>
+
+            <div class="chat-container" id="chatContainer">
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="glowing-orb-container">
+                        <div class="glowing-orb">
+                            <i class="fas fa-sparkles"></i>
+                        </div>
+                    </div>
+                    <h1 class="gradient-text">Ask anything</h1>
+                    <p class="welcome-subtext">Your NextGen assistant for ideas, analysis, and creation.</p>
+                    
+                    <!-- Suggestion Cards -->
+                    <div class="suggestion-grid">
+                        <div class="suggest-card" onclick="document.getElementById('messageInput').value='Brainstorm ideas for...'; document.getElementById('messageInput').focus();">
+                            <i class="fas fa-magic card-icon"></i>
+                            <h4>Brainstorm</h4>
+                            <p>ideas & topics</p>
+                        </div>
+                        <div class="suggest-card" onclick="document.getElementById('messageInput').value='Analyze this image...'; document.getElementById('messageInput').focus();">
+                            <i class="far fa-eye card-icon"></i>
+                            <h4>Analyze Image</h4>
+                            <p>visuals</p>
+                        </div>
+                        <div class="suggest-card" onclick="document.getElementById('messageInput').value='Write a Python script to...'; document.getElementById('messageInput').focus();">
+                            <i class="fas fa-code card-icon"></i>
+                            <h4>Write Code</h4>
+                            <p>scripting</p>
+                        </div>
+                        <div class="suggest-card" onclick="document.getElementById('messageInput').value='Generate a report on...'; document.getElementById('messageInput').focus();">
+                            <i class="far fa-file-alt card-icon"></i>
+                            <h4>Generate Docs</h4>
+                            <p>reports & PPTs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-area-wrapper">
+                <!-- Selectors styled as sleek tags above the input -->
+                <div class="mode-selector" id="modeSelector">
+                    <select id="agentSelect" class="custom-select">
+                        <option value="auto">🤖 Auto Route (Supervisor)</option>
+                        <option value="multimodal_rag">🧠 RAG Agent</option>
+                        <option value="code_agent">💻 Code Agent</option>
+                        <option value="ppt_agent">📊 PPT Agent</option>
+                        <option value="docx_agent">📄 DOCX Agent</option>
+                        <option value="research_agent">🔍 Research Agent</option>
+                    </select>
+
+                    <select id="toolSelect" class="custom-select">
+                        <option value="none">🔧 Auto Tools</option>
+                        <option value="get_stock_price">📈 Stock Price Tool</option>
+                        <option value="mail_send_tool">📧 Send Email Tool</option>
+                        <option value="create_image_tool">🎨 Create Image Tool</option>
+                        <option value="whatsapp_tool">💬 WhatsApp Tool</option>
+                        <option value="analyze_image_tool">👁️ Analyze Image Tool</option>
+                        <option value="calculator">🧮 Calculator Tool</option>
+                    </select>
+                </div>
+                
+                <div class="file-preview" id="filePreview"></div>
+                
+                <!-- The new "Pill" Input Form -->
+                <form id="chatForm" class="chat-input-pill" onsubmit="sendMessage(event)">
+                    <button type="button" class="attach-btn" onclick="document.getElementById('fileUpload').click()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <input type="file" id="fileUpload" multiple accept=".pdf,.txt,.docx,.pptx,.png,.jpg,.jpeg,.mp4" style="display:none">
+                    
+                    <button type="button" class="mic-btn"><i class="fas fa-microphone"></i></button>
+                    
+                    <textarea id="messageInput" placeholder="Ask anything or upload files..." rows="1" onkeydown="handleKeyPress(event)"></textarea>
+                    
+                    <button type="submit" id="sendBtn" class="gradient-send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🚨 IMAGE LIGHTBOX FIX: Added the hidden HTML container for the full-size images -->
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="enlargedImg">
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

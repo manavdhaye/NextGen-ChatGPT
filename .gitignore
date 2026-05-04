@@ -1,0 +1,55 @@
+# 🔐 Environment variables
+.env
+
+# 📁 Runtime / Generated folders
+uploads/
+audio/
+data/
+database/
+exports/
+generated_projects/
+images/
+extracted_data/
+logs/
+
+# 🧠 Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 🖥️ OS files
+.DS_Store
+Thumbs.db
+
+# 🛠️ IDE / Editor
+.vscode/
+.dist/
+
+# 📦 Build files
+*.log
+
+# 📜 Custom exclusions
+code_checking.js
+
+# 📦 Python virtual environment
+venv/
+env/
+myenv/
+
+# 📦 Temporary files
+*.tmp
+*.temp
+
+# 📊 SQLite DB (optional safety)
+*.db
+*.sqlite3
+
+# 📁 Audio files
+*.mp3
+*.wav
+
+# 📁 Images
+*.png
+*.jpg
+*.jpeg
